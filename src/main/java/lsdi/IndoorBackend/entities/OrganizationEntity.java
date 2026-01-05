@@ -34,6 +34,13 @@ public class OrganizationEntity {
     @OneToMany(mappedBy = "parentOrganization")
     private final List<OrganizationEntity> childOrganizations = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "organization",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private final List<IndoorEnvironmentEntity> indoorEnvironments = new ArrayList<>();
+
     // rootConstructor
     public OrganizationEntity(
             String organizationName,
@@ -61,5 +68,10 @@ public class OrganizationEntity {
         Objects.requireNonNull(child);
         child.parentOrganization = this;
         this.childOrganizations.add(child);
+    }
+
+    public void addIndoorEnvironment(IndoorEnvironmentEntity indoorEnvironment) {
+        indoorEnvironment.setOrganization(this);
+        this.indoorEnvironments.add(indoorEnvironment);
     }
 }
