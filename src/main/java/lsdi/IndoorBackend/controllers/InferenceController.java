@@ -23,4 +23,13 @@ public class InferenceController {
         inferenceService.addInferences(regionFingerprints);
         return ResponseEntity.status(HttpStatus.CREATED).body("created");
     }
+
+    @GetMapping("/{organizationId}")
+    public ResponseEntity<IndoorInferenceDTO> getIndoorInference(
+            @PathVariable Long organizationId
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                inferenceService.getIndoorInferenceById(organizationId
+        ));
+    }
 }

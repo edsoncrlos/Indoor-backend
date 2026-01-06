@@ -52,4 +52,14 @@ public class InferenceService {
 
         organizationRepository.save(organization);
     }
+
+    public IndoorInferenceDTO getIndoorInferenceById(Long organizationId) {
+        OrganizationEntity organization = organizationRepository
+                .findById(organizationId)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Organization not found")
+                );
+
+        return IndoorInferenceDTO.fromDomain(organization);
+    }
 }
