@@ -1,7 +1,7 @@
 package lsdi.IndoorBackend;
 
 import lsdi.IndoorBackend.common.ApiPaths;
-import lsdi.IndoorBackend.dtos.OrganizationDTO;
+import lsdi.IndoorBackend.dtos.CreateOrganizationDTO;
 import lsdi.IndoorBackend.entities.OrganizationEntity;
 import lsdi.IndoorBackend.repositories.OrganizationRepository;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ public class OrganizationIT {
         ResponseEntity<Long> responseRootOrg = restTemplate.postForEntity(ApiPaths.ORGANIZATION, ROOT_ORG, Long.class);
         Long idRootOrganization = responseRootOrg.getBody();
 
-        OrganizationDTO CHILD_ORGANIZATION = new OrganizationDTO(
+        CreateOrganizationDTO CHILD_ORGANIZATION = new CreateOrganizationDTO(
                 CHILD_ORG_NAME,
                 CEP,
                 idRootOrganization

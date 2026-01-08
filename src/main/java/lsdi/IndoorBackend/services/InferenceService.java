@@ -3,8 +3,8 @@ package lsdi.IndoorBackend.services;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lsdi.IndoorBackend.domain.model.IndoorEnvironment;
-import lsdi.IndoorBackend.domain.model.IndoorInference;
-import lsdi.IndoorBackend.dtos.IndoorInferenceDTO;
+import lsdi.IndoorBackend.domain.model.Organization;
+import lsdi.IndoorBackend.dtos.OrganizationDTO;
 import lsdi.IndoorBackend.entities.IndoorEnvironmentEntity;
 import lsdi.IndoorBackend.entities.OrganizationEntity;
 import lsdi.IndoorBackend.repositories.IndoorEnvironmentRepository;
@@ -26,40 +26,40 @@ public class InferenceService {
     }
 
     @Transactional
-    public void addInferences(IndoorInferenceDTO regionFingerprints) {
-        IndoorInference fingerprints = IndoorInference.Mapper.fromDTO(regionFingerprints);
+    public void addInferences(OrganizationDTO organizationDTO) {
+        Organization organization = Organization.Mapper.fromDTO(organizationDTO);
 
-        OrganizationEntity organization = organizationRepository
-                .findById(fingerprints.getOrganizationId())
+        OrganizationEntity organizationEntity = organizationRepository
+                .findById(organization.getOrganizationId())
                 .orElseThrow(() ->
                         new EntityNotFoundException("Organization not found")
                 );
 
-        for (IndoorEnvironment r: fingerprints.getIndoorEnvironments()) {
-            if (!indoorEnvironmentRepository.existsByEnvironmentName(r.getName())) {
+        for (IndoorEnvironment indoorEnvironment: organization.getIndoorEnvironments()) {
+            if (!indoorEnvironmentRepository.existsByEnvironmentName(indoorEnvironment.getName())) {
                 //TODO: verify if exist environment related with org with same name
             }
 
-            IndoorEnvironmentEntity indoorEnvironment = new IndoorEnvironmentEntity(
-                r.getName(),
-                r.getBeaconFingerprints(),
-                organization
+            IndoorEnvironmentEntity indoorEnvironmentEntity = new IndoorEnvironmentEntity(
+                indoorEnvironment.getName(),
+                indoorEnvironment.getBeaconsSignalStatistics(),
+                organizationEntity
             );
 
-            organization.addIndoorEnvironment(indoorEnvironment);
-            indoorEnvironmentRepository.save(indoorEnvironment);
+            organizationEntity.addIndoorEnvironment(indoorEnvironmentEntity);
+            indoorEnvironmentRepository.save(indoorEnvironmentEntity);
         }
 
-        organizationRepository.save(organization);
+        organizationRepository.save(organizationEntity);
     }
 
-    public IndoorInferenceDTO getIndoorInferenceById(Long organizationId) {
+    public OrganizationDTO getIndoorInferenceById(Long organizationId) {
         OrganizationEntity organization = organizationRepository
                 .findById(organizationId)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Organization not found")
                 );
 
-        return IndoorInferenceDTO.fromDomain(organization);
+        return OrganizationDTO.fromDomain(organization);
     }
 }

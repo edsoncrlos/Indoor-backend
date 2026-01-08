@@ -1,11 +1,8 @@
 package lsdi.IndoorBackend;
 
 import lsdi.IndoorBackend.common.ApiPaths;
-import lsdi.IndoorBackend.dtos.IndoorInferenceDTO;
-import lsdi.IndoorBackend.entities.IndoorEnvironmentEntity;
-import lsdi.IndoorBackend.entities.OrganizationEntity;
+import lsdi.IndoorBackend.dtos.OrganizationDTO;
 import lsdi.IndoorBackend.repositories.IndoorEnvironmentRepository;
-import lsdi.IndoorBackend.services.InferenceService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +26,7 @@ public class InferenceIT {
     public void addInference() {
         Long idOrg = (restTemplate.postForEntity(ApiPaths.ORGANIZATION, ROOT_ORG, Long.class)).getBody();
 
-        IndoorInferenceDTO inferenceDTO = new IndoorInferenceDTO(
+        OrganizationDTO inferenceDTO = new OrganizationDTO(
                 idOrg,
                 indoorEnvironmentsDTO
         );

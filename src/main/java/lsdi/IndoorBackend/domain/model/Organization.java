@@ -2,25 +2,25 @@ package lsdi.IndoorBackend.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lsdi.IndoorBackend.dtos.IndoorInferenceDTO;
+import lsdi.IndoorBackend.dtos.OrganizationDTO;
 
 import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class IndoorInference {
+public class Organization {
     private Long organizationId;
     private List<IndoorEnvironment> indoorEnvironments;
 
     public static class Mapper {
-        public static IndoorInference fromDTO(IndoorInferenceDTO dto) {
+        public static Organization fromDTO(OrganizationDTO dto) {
             List<IndoorEnvironment> indoorEnvironments =
                     dto.indoorEnvironments()
                             .stream()
                             .map(IndoorEnvironment.Mapper::fromDTO)
                             .toList();
 
-            return new IndoorInference(
+            return new Organization(
                     dto.organizationId(),
                     indoorEnvironments
             );

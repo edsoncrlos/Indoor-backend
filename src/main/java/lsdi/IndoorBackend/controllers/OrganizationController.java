@@ -1,7 +1,7 @@
 package lsdi.IndoorBackend.controllers;
 
 import lsdi.IndoorBackend.common.ApiPaths;
-import lsdi.IndoorBackend.dtos.OrganizationDTO;
+import lsdi.IndoorBackend.dtos.CreateOrganizationDTO;
 import lsdi.IndoorBackend.services.OrganizationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class OrganizationController {
     }
 
     @PostMapping(ApiPaths.ORGANIZATION)
-    public ResponseEntity<Long> addOrganization(@RequestBody OrganizationDTO organizationDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(organizationService.save(organizationDto));
+    public ResponseEntity<Long> addOrganization(@RequestBody CreateOrganizationDTO createOrganizationDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(organizationService.save(createOrganizationDto));
     }
 
     //TODO: getIdByName

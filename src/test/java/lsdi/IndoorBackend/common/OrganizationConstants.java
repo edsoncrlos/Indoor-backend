@@ -1,11 +1,11 @@
 package lsdi.IndoorBackend.common;
 
-import lsdi.IndoorBackend.dtos.OrganizationDTO;
+import lsdi.IndoorBackend.dtos.CreateOrganizationDTO;
 
 public class OrganizationConstants {
     public static String ROOT_ORG_NAME = "UFMA";
 
-    public static OrganizationDTO ROOT_ORG = new OrganizationDTO(
+    public static CreateOrganizationDTO ROOT_ORG = new CreateOrganizationDTO(
             ROOT_ORG_NAME,
             null,
             null

@@ -2,7 +2,7 @@ package lsdi.IndoorBackend.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import lsdi.IndoorBackend.domain.model.CEP;
-import lsdi.IndoorBackend.dtos.OrganizationDTO;
+import lsdi.IndoorBackend.dtos.CreateOrganizationDTO;
 import lsdi.IndoorBackend.entities.OrganizationEntity;
 import lsdi.IndoorBackend.repositories.OrganizationRepository;
 import org.springframework.stereotype.Service;
@@ -15,14 +15,14 @@ public class OrganizationService {
         this.organizationRepository = organizationRepository;
     }
 
-    public Long save(OrganizationDTO organization) {
+    public Long save(CreateOrganizationDTO organization) {
         OrganizationEntity organizationEntity = createOrganization(organization);
 
         OrganizationEntity organizationSaved = organizationRepository.save(organizationEntity);
         return organizationSaved.getId();
     }
 
-    private OrganizationEntity createOrganization(OrganizationDTO organization) {
+    private OrganizationEntity createOrganization(CreateOrganizationDTO organization) {
         CEP cep = null;
         if (organization.cep() != null) {
             cep = new CEP(organization.cep());
