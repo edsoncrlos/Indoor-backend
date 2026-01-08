@@ -1,6 +1,6 @@
 package lsdi.IndoorBackend.common;
 
-import lsdi.IndoorBackend.dtos.BeaconFingerprintDTO;
+import lsdi.IndoorBackend.dtos.BeaconSignalStatisticsDTO;
 import lsdi.IndoorBackend.dtos.IndoorEnvironmentDTO;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class InferenceConstants {
             new IndoorEnvironmentDTO(
                     "ets",
                     List.of(
-                            new BeaconFingerprintDTO(
+                            new BeaconSignalStatisticsDTO(
                                     "AA:BB:CC:DD:EE:01",
                                     -65.3f,
                                     4.2,
@@ -19,7 +19,7 @@ public class InferenceConstants {
                                     17.64,
                                     0.8f
                             ),
-                            new BeaconFingerprintDTO(
+                            new BeaconSignalStatisticsDTO(
                                     "AA:BB:CC:DD:EE:02",
                                     -67.0f,
                                     3.8,
@@ -27,7 +27,7 @@ public class InferenceConstants {
                                     14.44,
                                     0.7f
                             ),
-                            new BeaconFingerprintDTO(
+                            new BeaconSignalStatisticsDTO(
                                     "AA:BB:CC:DD:EE:03",
                                     -70.1f,
                                     5.0,
@@ -40,7 +40,7 @@ public class InferenceConstants {
             new IndoorEnvironmentDTO(
                     "meet",
                     List.of(
-                            new BeaconFingerprintDTO(
+                            new BeaconSignalStatisticsDTO(
                                     "11:22:33:44:55:01",
                                     -60.0f,
                                     3.0,
@@ -48,7 +48,7 @@ public class InferenceConstants {
                                     9.0,
                                     1.0f
                             ),
-                            new BeaconFingerprintDTO(
+                            new BeaconSignalStatisticsDTO(
                                     "11:22:33:44:55:02",
                                     -62.5f,
                                     3.5,
@@ -56,7 +56,7 @@ public class InferenceConstants {
                                     12.25,
                                     0.9f
                             ),
-                            new BeaconFingerprintDTO(
+                            new BeaconSignalStatisticsDTO(
                                     "11:22:33:44:55:03",
                                     -64.0f,
                                     4.0,

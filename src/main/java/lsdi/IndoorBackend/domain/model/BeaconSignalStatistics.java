@@ -3,12 +3,12 @@ package lsdi.IndoorBackend.domain.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lsdi.IndoorBackend.dtos.BeaconFingerprintDTO;
+import lsdi.IndoorBackend.dtos.BeaconSignalStatisticsDTO;
 
 import java.util.Objects;
 
 @Getter
-public class BeaconFingerprint {
+public class BeaconSignalStatistics {
     private final String macAddress;
     private final float mean;
     private final double std;
@@ -17,7 +17,7 @@ public class BeaconFingerprint {
     private final float weight;
 
     @JsonCreator
-    public BeaconFingerprint(
+    public BeaconSignalStatistics(
             @JsonProperty("macAddress") String macAddress,
             @JsonProperty("mean") float mean,
             @JsonProperty("std") double std,
@@ -46,9 +46,9 @@ public class BeaconFingerprint {
 
 
     public static class Mapper {
-        public static BeaconFingerprint fromDTO(BeaconFingerprintDTO dto) {
+        public static BeaconSignalStatistics fromDTO(BeaconSignalStatisticsDTO dto) {
 
-            return new BeaconFingerprint(
+            return new BeaconSignalStatistics(
                 dto.mac(),
                 dto.mean(),
                 dto.std(),

@@ -10,23 +10,23 @@ import java.util.List;
 @Getter
 public class IndoorEnvironment {
     private String name;
-    private List<BeaconFingerprint> beaconFingerprints;
+    private List<BeaconSignalStatistics> beaconsSignalStatistics;
 
     public int numberBeacons() {
-        return beaconFingerprints.size();
+        return beaconsSignalStatistics.size();
     }
 
     public static class Mapper {
         public static IndoorEnvironment fromDTO(IndoorEnvironmentDTO dto) {
-            List<BeaconFingerprint> beaconFingerprints =
-                    dto.beaconFingerprints()
+            List<BeaconSignalStatistics> beaconSignalStatistics =
+                    dto.beaconsSignalStatistics()
                             .stream()
-                            .map(BeaconFingerprint.Mapper::fromDTO)
+                            .map(BeaconSignalStatistics.Mapper::fromDTO)
                             .toList();
 
             return new IndoorEnvironment(
                     dto.name(),
-                    beaconFingerprints
+                    beaconSignalStatistics
             );
         }
     }

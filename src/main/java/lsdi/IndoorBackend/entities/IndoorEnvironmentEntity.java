@@ -5,8 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lsdi.IndoorBackend.domain.model.BeaconFingerprint;
-import lsdi.IndoorBackend.entities.converter.BeaconFingerprintJsonConverter;
+import lsdi.IndoorBackend.domain.model.BeaconSignalStatistics;
+import lsdi.IndoorBackend.entities.converter.BeaconsSignalStatisticsJsonConverter;
 import org.hibernate.annotations.ColumnTransformer;
 
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ public class IndoorEnvironmentEntity {
 
     @Column(columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")
-    @Convert(converter = BeaconFingerprintJsonConverter.class)
-    private List<BeaconFingerprint> beaconsFingerprints;
+    @Convert(converter = BeaconsSignalStatisticsJsonConverter.class)
+    private List<BeaconSignalStatistics> beaconsSignalStatistics;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_indoor_environment_id")
@@ -46,11 +46,11 @@ public class IndoorEnvironmentEntity {
     // root constructor
     public IndoorEnvironmentEntity(
             String environmentName,
-            List<BeaconFingerprint> beaconsFingerprints,
+            List<BeaconSignalStatistics> beaconsSignalStatistics,
             OrganizationEntity organization
     ) {
         this.environmentName = environmentName;
-        this.beaconsFingerprints = beaconsFingerprints;
+        this.beaconsSignalStatistics = beaconsSignalStatistics;
         this.organization = organization;
         this.parentIndoorEnvironment = null;
     }
@@ -58,11 +58,11 @@ public class IndoorEnvironmentEntity {
     // child constructor
     public IndoorEnvironmentEntity(
             String environmentName,
-            List<BeaconFingerprint> beaconsFingerprints,
+            List<BeaconSignalStatistics> beaconsSignalStatistics,
             IndoorEnvironmentEntity parentIndoorEnvironment
     ) {
         this.environmentName = environmentName;
-        this.beaconsFingerprints = beaconsFingerprints;
+        this.beaconsSignalStatistics = beaconsSignalStatistics;
         this.parentIndoorEnvironment = Objects.requireNonNull(parentIndoorEnvironment);
         this.organization = parentIndoorEnvironment.getOrganization();
 

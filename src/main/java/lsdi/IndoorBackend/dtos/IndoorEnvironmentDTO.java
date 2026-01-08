@@ -10,19 +10,19 @@ public record IndoorEnvironmentDTO(
         @NotBlank
         String name,
         @NotNull
-        List<BeaconFingerprintDTO> beaconFingerprints
+        List<BeaconSignalStatisticsDTO> beaconsSignalStatistics
 ) {
     public static IndoorEnvironmentDTO fromDomain(IndoorEnvironmentEntity domain) {
 
-        List<BeaconFingerprintDTO> fingerprints =
-                domain.getBeaconsFingerprints()
+        List<BeaconSignalStatisticsDTO> beaconSignalStatistics =
+                domain.getBeaconsSignalStatistics()
                         .stream()
-                        .map(BeaconFingerprintDTO::fromDomain)
+                        .map(BeaconSignalStatisticsDTO::fromDomain)
                         .toList();
 
         return new IndoorEnvironmentDTO(
                 domain.getEnvironmentName(),
-                fingerprints
+                beaconSignalStatistics
         );
     }
 }
