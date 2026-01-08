@@ -2,6 +2,7 @@ package lsdi.IndoorBackend.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import lsdi.IndoorBackend.domain.model.CEP;
+import lsdi.IndoorBackend.domain.model.Organization;
 import lsdi.IndoorBackend.dtos.CreateOrganizationDTO;
 import lsdi.IndoorBackend.entities.OrganizationEntity;
 import lsdi.IndoorBackend.repositories.OrganizationRepository;
@@ -15,29 +16,31 @@ public class OrganizationService {
         this.organizationRepository = organizationRepository;
     }
 
-    public Long save(CreateOrganizationDTO organization) {
-        OrganizationEntity organizationEntity = createOrganization(organization);
+    public Long save(CreateOrganizationDTO organizationDTO) {
+        Organization organization = new Organization(
+                organizationDTO.name(),
+                organizationDTO.cep(),
+                organizationDTO.parentOrganizationId()
+        );
+
+        OrganizationEntity organizationEntity = createOrganizationEntity(organization);
 
         OrganizationEntity organizationSaved = organizationRepository.save(organizationEntity);
         return organizationSaved.getId();
     }
 
-    private OrganizationEntity createOrganization(CreateOrganizationDTO organization) {
-        CEP cep = null;
-        if (organization.cep() != null) {
-            cep = new CEP(organization.cep());
-        }
+    private OrganizationEntity createOrganizationEntity(Organization organization) {
 
-        if (organization.parentOrganizationId() == null) {
-            return new OrganizationEntity(organization.name(), cep);
+        if (organization.isRoot()) {
+            return new OrganizationEntity(organization.getName(), organization.getCep());
         }
 
         OrganizationEntity parent = organizationRepository
-                .findById(organization.parentOrganizationId())
+                .findById(organization.getParentOrganizationId())
                 .orElseThrow(() ->
                         new EntityNotFoundException("Organization not found")
                 );
 
-        return new OrganizationEntity(organization.name(), cep, parent);
+        return new OrganizationEntity(organization.getName(), organization.getCep(), parent);
     }
 }

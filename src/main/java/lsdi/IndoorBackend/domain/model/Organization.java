@@ -10,7 +10,31 @@ import java.util.List;
 @Getter
 public class Organization {
     private Long organizationId;
+    private String name;
     private List<IndoorEnvironment> indoorEnvironments;
+    private CEP cep;
+    private Long parentOrganizationId;
+
+    public Organization(String name, String cep, Long parentOrganizationId) {
+        this.name = name;
+        this.parentOrganizationId = parentOrganizationId;
+
+        if (cep != null) {
+            this.cep = new CEP(cep);
+        }
+    }
+
+    public Organization(Long organizationId, List<IndoorEnvironment> indoorEnvironments) {
+        this.organizationId = organizationId;
+        this.indoorEnvironments = indoorEnvironments;
+    }
+
+    public boolean isRoot() {
+        if (parentOrganizationId == null) {
+            return true;
+        }
+        return false;
+    }
 
     public static class Mapper {
         public static Organization fromDTO(OrganizationDTO dto) {
