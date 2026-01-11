@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -27,6 +29,9 @@ public class UserEntity {
     @Setter
     @Column(nullable = false, unique = true)
     private String email;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserIndoorEnvironmentEntity> indoorEnvironments = new HashSet<>();
 
     public UserEntity(String name, String email, UUID mobileIdentifier) {
         this.name = name;

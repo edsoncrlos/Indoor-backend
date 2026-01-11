@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lsdi.IndoorBackend.dtos.IndoorEnvironmentDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,6 +23,19 @@ public class IndoorEnvironment {
         this.name = name;
         this.beaconsSignalStatistics = beaconsSignalStatistics;
         this.childsIndoorEnvironments = childsIndoorEnvironments;
+    }
+
+    public IndoorEnvironment (
+            Long id,
+            String name
+    ) {
+        this.id = id;
+        this.name = name;
+        this.childsIndoorEnvironments = new ArrayList<>();
+    }
+
+    public void addChildIndoorEnvironment(IndoorEnvironment indoorEnvironment) {
+        this.childsIndoorEnvironments.add(indoorEnvironment);
     }
 
     public int numberBeacons() {

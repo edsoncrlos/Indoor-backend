@@ -2,8 +2,9 @@ package lsdi.IndoorBackend.controllers;
 
 import jakarta.validation.Valid;
 import lsdi.IndoorBackend.common.ApiPaths;
-import lsdi.IndoorBackend.dtos.IndoorEnvironmentDTO;
+import lsdi.IndoorBackend.dtos.InferenceIndoorEnvironmentDTO;
 import lsdi.IndoorBackend.dtos.OrganizationDTO;
+import lsdi.IndoorBackend.dtos.OrganizationHierarchyLocationDTO;
 import lsdi.IndoorBackend.services.InferenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,19 @@ public class InferenceController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 inferenceService.getIndoorInferenceById(organizationId
         ));
+    }
+
+    @PostMapping(ApiPaths.ONLINE)
+    public void addIndoorInference(InferenceIndoorEnvironmentDTO inferenceDTO) {
+        inferenceService.addInference(inferenceDTO);
+        ResponseEntity.status(HttpStatus.CREATED).body("created");
+    }
+
+    @GetMapping(ApiPaths.ONLINE+"/{userId}")
+    public ResponseEntity<OrganizationHierarchyLocationDTO> getUserLastLocation(@PathVariable Long userId) {
+        OrganizationHierarchyLocationDTO organizationHierarchyLocationDTO = OrganizationHierarchyLocationDTO
+                .fromDomain(inferenceService.getUserLastLocation(userId));
+
+        return ResponseEntity.status(HttpStatus.OK).body(organizationHierarchyLocationDTO);
     }
 }

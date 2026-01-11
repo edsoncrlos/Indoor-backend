@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lsdi.IndoorBackend.dtos.OrganizationDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,6 +23,13 @@ public class Organization {
         if (cep != null) {
             this.cep = new CEP(cep);
         }
+    }
+
+    public Organization(Long organizationId, String name, IndoorEnvironment indoorEnvironments) {
+        this.organizationId = organizationId;
+        this.name = name;
+        this.indoorEnvironments = new ArrayList<>(1);
+        this.indoorEnvironments.add(indoorEnvironments);
     }
 
     public Organization(Long organizationId, List<IndoorEnvironment> indoorEnvironments) {

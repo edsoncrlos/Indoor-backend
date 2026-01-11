@@ -9,9 +9,7 @@ import lsdi.IndoorBackend.domain.model.BeaconSignalStatistics;
 import lsdi.IndoorBackend.entities.converter.BeaconsSignalStatisticsJsonConverter;
 import org.hibernate.annotations.ColumnTransformer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "TB_INDOOR_ENVIRONMENT")
@@ -34,14 +32,20 @@ public class IndoorEnvironmentEntity {
     @JoinColumn(name = "parent_indoor_environment_id")
     private IndoorEnvironmentEntity parentIndoorEnvironment;
 
-    @OneToMany(mappedBy = "parentIndoorEnvironment")
+    @OneToMany(
+            mappedBy = "parentIndoorEnvironment",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private final List<IndoorEnvironmentEntity> childIndoorEnvironments = new ArrayList<>();
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_organization_id")
     @Setter
     private OrganizationEntity organization;
+
+    @OneToMany(mappedBy = "indoorEnvironment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserIndoorEnvironmentEntity> users = new HashSet<>();
 
     // root constructor
     public IndoorEnvironmentEntity(
