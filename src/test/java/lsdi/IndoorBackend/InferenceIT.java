@@ -31,7 +31,7 @@ public class InferenceIT {
                 indoorEnvironmentsDTO
         );
 
-        ResponseEntity<String> response = restTemplate.postForEntity(ApiPaths.INFERENCE, inferenceDTO, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(ApiPaths.INFERENCE+ApiPaths.OFFLINE, inferenceDTO, String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();

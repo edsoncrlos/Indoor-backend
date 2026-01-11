@@ -10,6 +10,7 @@ public class InferenceConstants {
     public static List<IndoorEnvironmentDTO> indoorEnvironmentsDTO = List.of(
             new IndoorEnvironmentDTO(
                     "ets",
+                    List.of(),
                     List.of(
                             new BeaconSignalStatisticsDTO(
                                     "AA:BB:CC:DD:EE:01",
@@ -39,6 +40,7 @@ public class InferenceConstants {
             ),
             new IndoorEnvironmentDTO(
                     "meet",
+                    List.of(),
                     List.of(
                             new BeaconSignalStatisticsDTO(
                                     "11:22:33:44:55:01",

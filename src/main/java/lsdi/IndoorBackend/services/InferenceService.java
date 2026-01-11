@@ -7,8 +7,11 @@ import lsdi.IndoorBackend.domain.model.Organization;
 import lsdi.IndoorBackend.dtos.OrganizationDTO;
 import lsdi.IndoorBackend.entities.IndoorEnvironmentEntity;
 import lsdi.IndoorBackend.entities.OrganizationEntity;
+import lsdi.IndoorBackend.entities.converter.IndoorEnvironmentEntityMapper;
 import lsdi.IndoorBackend.repositories.IndoorEnvironmentRepository;
 import lsdi.IndoorBackend.repositories.OrganizationRepository;
+import lsdi.IndoorBackend.repositories.UserIndoorEnvironmentRepository;
+import lsdi.IndoorBackend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,17 +19,23 @@ public class InferenceService {
 
     private final OrganizationRepository organizationRepository;
     private final IndoorEnvironmentRepository indoorEnvironmentRepository;
+    private final UserRepository userRepository;
+    private final UserIndoorEnvironmentRepository userIndoorEnvironmentRepository;
 
     public InferenceService(
             OrganizationRepository organizationRepository,
-            IndoorEnvironmentRepository indoorEnvironmentRepository
+            IndoorEnvironmentRepository indoorEnvironmentRepository,
+            UserRepository userRepository,
+            UserIndoorEnvironmentRepository userIndoorEnvironmentRepository
     ) {
         this.organizationRepository = organizationRepository;
         this.indoorEnvironmentRepository = indoorEnvironmentRepository;
+        this.userRepository = userRepository;
+        this.userIndoorEnvironmentRepository = userIndoorEnvironmentRepository;
     }
 
     @Transactional
-    public void addInferences(OrganizationDTO organizationDTO) {
+    public void saveOrganizationIndoorTraining(OrganizationDTO organizationDTO) {
         Organization organization = Organization.Mapper.fromDTO(organizationDTO);
 
         OrganizationEntity organizationEntity = organizationRepository
@@ -40,11 +49,11 @@ public class InferenceService {
                 //TODO: verify if exist environment related with org with same name
             }
 
-            IndoorEnvironmentEntity indoorEnvironmentEntity = new IndoorEnvironmentEntity(
-                indoorEnvironment.getName(),
-                indoorEnvironment.getBeaconsSignalStatistics(),
-                organizationEntity
-            );
+            IndoorEnvironmentEntity indoorEnvironmentEntity = IndoorEnvironmentEntityMapper
+                    .toEntity(
+                            indoorEnvironment,
+                            organizationEntity
+                    );
 
             organizationEntity.addIndoorEnvironment(indoorEnvironmentEntity);
             indoorEnvironmentRepository.save(indoorEnvironmentEntity);

@@ -1,7 +1,7 @@
 package lsdi.IndoorBackend.common;
 
 public class ApiPaths {
-    public static final String OFFLINE  = "/coleta";
+    public static final String OFFLINE  = "/treino";
     public static final String ONLINE = "/posicao";
 
     public static final String ORGANIZATION = "/organizacao";

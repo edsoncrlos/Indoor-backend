@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IndoorEnvironmentRepository extends JpaRepository<IndoorEnvironmentEntity, Long> {
-    public boolean existsByEnvironmentName(String environmentName);
+    boolean existsByEnvironmentName(String environmentName);
 }
