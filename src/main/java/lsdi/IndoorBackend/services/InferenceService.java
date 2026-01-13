@@ -44,13 +44,13 @@ public class InferenceService {
         Organization organization = Organization.Mapper.fromDTO(organizationDTO);
 
         OrganizationEntity organizationEntity = organizationRepository
-                .findById(organization.getOrganizationId())
+                .findById(organization.getId())
                 .orElseThrow(() ->
                         new EntityNotFoundException("Organization not found")
                 );
 
         for (IndoorEnvironment indoorEnvironment: organization.getIndoorEnvironments()) {
-            if (!indoorEnvironmentRepository.existsByEnvironmentName(indoorEnvironment.getName())) {
+            if (!indoorEnvironmentRepository.existsByName(indoorEnvironment.getName())) {
                 //TODO: verify if exist environment related with org with same name
             }
 
@@ -107,11 +107,9 @@ public class InferenceService {
                         new EntityNotFoundException("User not found")
                 );
 
-        Organization organization = getOrganizationWithParentIndoorEnvironments(
+        return getOrganizationWithParentIndoorEnvironments(
                 userIndoorEnvironment.getIndoorEnvironment()
         );
-
-        return organization;
     }
 
     @Transactional
@@ -121,19 +119,19 @@ public class InferenceService {
 
         IndoorEnvironment childIndoorEnvironment = new IndoorEnvironment(
             current.getId(),
-            current.getEnvironmentName()
+            current.getName()
         );
         IndoorEnvironment parentIndoorEnvironment;
 
-        while (current.getParentIndoorEnvironment() != null) {
+        while (current.getParent() != null) {
             if (!visited.add(current.getId())) {
                 throw new IllegalStateException("Cycle detected in the hierarchy");
             }
-            current = current.getParentIndoorEnvironment();
+            current = current.getParent();
 
             parentIndoorEnvironment = new IndoorEnvironment(
                     current.getId(),
-                    current.getEnvironmentName()
+                    current.getName()
             );
 
             parentIndoorEnvironment.addChildIndoorEnvironment(childIndoorEnvironment);
@@ -143,7 +141,7 @@ public class InferenceService {
 
         return new Organization(
                 organizationEntity.getId(),
-                organizationEntity.getOrganizationName(),
+                organizationEntity.getName(),
                 childIndoorEnvironment
         );
     }

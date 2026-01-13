@@ -10,35 +10,35 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class Organization {
-    private Long organizationId;
+    private Long id;
     private String name;
     private List<IndoorEnvironment> indoorEnvironments;
     private CEP cep;
-    private Long parentOrganizationId;
+    private Long parentId;
 
-    public Organization(String name, String cep, Long parentOrganizationId) {
+    public Organization(String name, String cep, Long parentId) {
         this.name = name;
-        this.parentOrganizationId = parentOrganizationId;
+        this.parentId = parentId;
 
         if (cep != null) {
             this.cep = new CEP(cep);
         }
     }
 
-    public Organization(Long organizationId, String name, IndoorEnvironment indoorEnvironments) {
-        this.organizationId = organizationId;
+    public Organization(Long id, String name, IndoorEnvironment indoorEnvironments) {
+        this.id = id;
         this.name = name;
         this.indoorEnvironments = new ArrayList<>(1);
         this.indoorEnvironments.add(indoorEnvironments);
     }
 
-    public Organization(Long organizationId, List<IndoorEnvironment> indoorEnvironments) {
-        this.organizationId = organizationId;
+    public Organization(Long id, List<IndoorEnvironment> indoorEnvironments) {
+        this.id = id;
         this.indoorEnvironments = indoorEnvironments;
     }
 
     public boolean isRoot() {
-        if (parentOrganizationId == null) {
+        if (parentId == null) {
             return true;
         }
         return false;

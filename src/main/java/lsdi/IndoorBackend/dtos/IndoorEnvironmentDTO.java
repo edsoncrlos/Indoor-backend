@@ -38,14 +38,14 @@ public record IndoorEnvironmentDTO(
                         .toList();
 
         List<IndoorEnvironmentDTO> childsIndoorEnvironments =
-                domain.getChildIndoorEnvironments()
+                domain.getChildren()
                         .stream()
                         .map(IndoorEnvironmentDTO::fromDomain)
                         .toList();
 
         return new IndoorEnvironmentDTO(
                 domain.getId(),
-                domain.getEnvironmentName(),
+                domain.getName(),
                 childsIndoorEnvironments,
                 beaconSignalStatistics
         );

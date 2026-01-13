@@ -16,7 +16,7 @@ public record OrganizationHierarchyLocationDTO(
                         .orElse(null);
 
         return new OrganizationHierarchyLocationDTO(
-                domain.getOrganizationId(),
+                domain.getId(),
                 domain.getName(),
                 child
         );

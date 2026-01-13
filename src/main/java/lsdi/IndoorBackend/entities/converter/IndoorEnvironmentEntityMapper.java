@@ -27,7 +27,7 @@ public final class IndoorEnvironmentEntityMapper {
             IndoorEnvironment domainParent,
             IndoorEnvironmentEntity entityParent
     ) {
-        for (IndoorEnvironment childDomain : domainParent.getChildsIndoorEnvironments()) {
+        for (IndoorEnvironment childDomain : domainParent.getChildren()) {
 
             IndoorEnvironmentEntity childEntity =
                     new IndoorEnvironmentEntity(

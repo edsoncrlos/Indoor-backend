@@ -21,7 +21,7 @@ public class IndoorEnvironmentEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String environmentName;
+    private String name;
 
     @Column(columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")
@@ -29,15 +29,15 @@ public class IndoorEnvironmentEntity {
     private List<BeaconSignalStatistics> beaconsSignalStatistics;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_indoor_environment_id")
-    private IndoorEnvironmentEntity parentIndoorEnvironment;
+    @JoinColumn(name = "parent_id")
+    private IndoorEnvironmentEntity parent;
 
     @OneToMany(
-            mappedBy = "parentIndoorEnvironment",
+            mappedBy = "parent",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private final List<IndoorEnvironmentEntity> childIndoorEnvironments = new ArrayList<>();
+    private final List<IndoorEnvironmentEntity> children = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_organization_id")
@@ -49,35 +49,35 @@ public class IndoorEnvironmentEntity {
 
     // root constructor
     public IndoorEnvironmentEntity(
-            String environmentName,
+            String name,
             List<BeaconSignalStatistics> beaconsSignalStatistics,
             OrganizationEntity organization
     ) {
-        this.environmentName = environmentName;
-        this.beaconsSignalStatistics = beaconsSignalStatistics;
-        this.organization = organization;
-        this.parentIndoorEnvironment = null;
+        this.name = Objects.requireNonNull(name);
+        this.beaconsSignalStatistics = Objects.requireNonNull(beaconsSignalStatistics);
+        this.organization = Objects.requireNonNull(organization);
+        this.parent = null;
     }
 
     // child constructor
     public IndoorEnvironmentEntity(
-            String environmentName,
+            String name,
             List<BeaconSignalStatistics> beaconsSignalStatistics,
-            IndoorEnvironmentEntity parentIndoorEnvironment
+            IndoorEnvironmentEntity parent
     ) {
-        this.environmentName = environmentName;
-        this.beaconsSignalStatistics = beaconsSignalStatistics;
-        this.parentIndoorEnvironment = Objects.requireNonNull(parentIndoorEnvironment);
-        this.organization = parentIndoorEnvironment.getOrganization();
+        this.name = Objects.requireNonNull(name);
+        this.beaconsSignalStatistics = Objects.requireNonNull(beaconsSignalStatistics);
+        this.parent = Objects.requireNonNull(parent);
+        this.organization = parent.getOrganization();
 
-        parentIndoorEnvironment.addChildIndoorEnvironment(this);
+        parent.addChildIndoorEnvironment(this);
     }
 
     public void addChildIndoorEnvironment(IndoorEnvironmentEntity child) {
         Objects.requireNonNull(child);
-        child.parentIndoorEnvironment = this;
+        child.parent = this;
         child.organization = this.organization;
-        this.childIndoorEnvironments.add(child);
+        this.children.add(child);
     }
 
 }

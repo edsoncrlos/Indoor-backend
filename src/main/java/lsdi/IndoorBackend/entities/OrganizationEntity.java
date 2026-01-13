@@ -21,18 +21,18 @@ public class OrganizationEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String organizationName;
+    private String name;
 
     @Column(name = "cep", length = 8)
     @Convert(converter = CEPConverter.class)
     private CEP cep;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_organization_id")
-    private OrganizationEntity parentOrganization;
+    @JoinColumn(name = "parent_id")
+    private OrganizationEntity parent;
 
-    @OneToMany(mappedBy = "parentOrganization")
-    private final List<OrganizationEntity> childOrganizations = new ArrayList<>();
+    @OneToMany(mappedBy = "parent")
+    private final List<OrganizationEntity> children = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "organization",
@@ -43,31 +43,31 @@ public class OrganizationEntity {
 
     // rootConstructor
     public OrganizationEntity(
-            String organizationName,
+            String name,
             CEP cep
     ) {
-        this.organizationName = organizationName;
+        this.name = Objects.requireNonNull(name);
         this.cep = cep;
-        this.parentOrganization = null;
+        this.parent = null;
     }
 
     // childConstructor
     public OrganizationEntity(
-            String organizationName,
+            String name,
             CEP cep,
-            OrganizationEntity parentOrganization
+            OrganizationEntity parent
     ) {
-        this.organizationName = Objects.requireNonNull(organizationName);
+        this.name = Objects.requireNonNull(name);
         this.cep = cep;
-        this.parentOrganization = Objects.requireNonNull(parentOrganization);
+        this.parent = Objects.requireNonNull(parent);
 
-        this.parentOrganization.addChildOrganization(this);
+        this.parent.addChildOrganization(this);
     }
 
     public void addChildOrganization(OrganizationEntity child) {
         Objects.requireNonNull(child);
-        child.parentOrganization = this;
-        this.childOrganizations.add(child);
+        child.parent = this;
+        this.children.add(child);
     }
 
     public void addIndoorEnvironment(IndoorEnvironmentEntity indoorEnvironment) {

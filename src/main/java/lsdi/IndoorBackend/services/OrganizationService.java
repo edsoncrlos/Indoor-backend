@@ -1,7 +1,6 @@
 package lsdi.IndoorBackend.services;
 
 import jakarta.persistence.EntityNotFoundException;
-import lsdi.IndoorBackend.domain.model.CEP;
 import lsdi.IndoorBackend.domain.model.Organization;
 import lsdi.IndoorBackend.dtos.CreateOrganizationDTO;
 import lsdi.IndoorBackend.entities.OrganizationEntity;
@@ -36,7 +35,7 @@ public class OrganizationService {
         }
 
         OrganizationEntity parent = organizationRepository
-                .findById(organization.getParentOrganizationId())
+                .findById(organization.getParentId())
                 .orElseThrow(() ->
                         new EntityNotFoundException("Organization not found")
                 );

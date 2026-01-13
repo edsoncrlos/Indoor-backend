@@ -32,7 +32,7 @@ public class OrganizationIT {
 
         OrganizationEntity savedRoot = organizationRepository.findById(idRoot).orElseThrow();
 
-        assertThat(savedRoot.getOrganizationName()).isEqualTo(ROOT_ORG_NAME);
+        assertThat(savedRoot.getName()).isEqualTo(ROOT_ORG_NAME);
         assertThat(savedRoot.getCep()).isNull();
     }
 
@@ -55,8 +55,8 @@ public class OrganizationIT {
 
         OrganizationEntity saved = organizationRepository.findById(idChildOrg).orElseThrow();
 
-        assertThat(saved.getOrganizationName()).isEqualTo(CHILD_ORG_NAME);
+        assertThat(saved.getName()).isEqualTo(CHILD_ORG_NAME);
         assertThat(saved.getCep().getFormatted()).isEqualTo(CEP);
-        assertThat(saved.getParentOrganization().getId()).isEqualTo(idRootOrganization);
+        assertThat(saved.getParent().getId()).isEqualTo(idRootOrganization);
     }
 }

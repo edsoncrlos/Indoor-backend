@@ -12,17 +12,17 @@ import java.util.List;
 public class IndoorEnvironment {
     private Long id;
     private String name;
-    private List<IndoorEnvironment> childsIndoorEnvironments;
+    private List<IndoorEnvironment> children;
     private List<BeaconSignalStatistics> beaconsSignalStatistics;
 
     public IndoorEnvironment (
             String name,
-            List<IndoorEnvironment> childsIndoorEnvironments,
+            List<IndoorEnvironment> children,
             List<BeaconSignalStatistics> beaconsSignalStatistics
     ) {
         this.name = name;
         this.beaconsSignalStatistics = beaconsSignalStatistics;
-        this.childsIndoorEnvironments = childsIndoorEnvironments;
+        this.children = children;
     }
 
     public IndoorEnvironment (
@@ -31,11 +31,11 @@ public class IndoorEnvironment {
     ) {
         this.id = id;
         this.name = name;
-        this.childsIndoorEnvironments = new ArrayList<>();
+        this.children = new ArrayList<>();
     }
 
     public void addChildIndoorEnvironment(IndoorEnvironment indoorEnvironment) {
-        this.childsIndoorEnvironments.add(indoorEnvironment);
+        this.children.add(indoorEnvironment);
     }
 
     public int numberBeacons() {
@@ -50,7 +50,7 @@ public class IndoorEnvironment {
                             .map(BeaconSignalStatistics.Mapper::fromDTO)
                             .toList();
 
-            List<IndoorEnvironment> childsIndoorEnvironments =
+            List<IndoorEnvironment> children =
                     dto.childsIndoorEnvironments()
                             .stream()
                             .map(Mapper::fromDTO)
@@ -58,7 +58,7 @@ public class IndoorEnvironment {
 
             return new IndoorEnvironment(
                     dto.name(),
-                    childsIndoorEnvironments,
+                    children,
                     beaconSignalStatistics
             );
         }

@@ -9,7 +9,7 @@ public record IndoorEnvironmentHierarchyLocationDTO(
 ) {
     public static IndoorEnvironmentHierarchyLocationDTO fromDomain(IndoorEnvironment domain) {
         IndoorEnvironmentHierarchyLocationDTO child =
-                domain.getChildsIndoorEnvironments().stream()
+                domain.getChildren().stream()
                         .findFirst()
                         .map(IndoorEnvironmentHierarchyLocationDTO::fromDomain)
                         .orElse(null);
