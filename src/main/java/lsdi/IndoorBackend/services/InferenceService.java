@@ -4,8 +4,10 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lsdi.IndoorBackend.domain.model.IndoorEnvironment;
 import lsdi.IndoorBackend.domain.model.Organization;
+import lsdi.IndoorBackend.dtos.IndoorEnvironmentHierarchyLocationDTO;
 import lsdi.IndoorBackend.dtos.InferenceIndoorEnvironmentDTO;
 import lsdi.IndoorBackend.dtos.OrganizationDTO;
+import lsdi.IndoorBackend.dtos.OrganizationHierarchyLocationDTO;
 import lsdi.IndoorBackend.entities.IndoorEnvironmentEntity;
 import lsdi.IndoorBackend.entities.OrganizationEntity;
 import lsdi.IndoorBackend.entities.UserEntity;
@@ -102,7 +104,7 @@ public class InferenceService {
     }
 
     @Transactional
-    public Organization getUserLastLocation(Long userId) {
+    public OrganizationHierarchyLocationDTO getUserLastLocation(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new EntityNotFoundException("User not found");
         }
@@ -113,9 +115,17 @@ public class InferenceService {
                         new EntityNotFoundException("User never send predict")
                 );
 
-        return getOrganizationWithParentIndoorEnvironments(
+        Organization organization =  getOrganizationWithParentIndoorEnvironments(
                 userIndoorEnvironment.getIndoorEnvironment()
         );
+
+        OrganizationHierarchyLocationDTO organizationHierarchyLocationDTO = new OrganizationHierarchyLocationDTO(
+                organization.getId(),
+                userIndoorEnvironment.getCreatedAt(),
+                organization.getName(),
+                IndoorEnvironmentHierarchyLocationDTO.fromDomain(organization.getIndoorEnvironments().get(0))
+        );
+        return organizationHierarchyLocationDTO;
     }
 
     @Transactional

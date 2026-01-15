@@ -43,8 +43,8 @@ public class InferenceController {
 
     @GetMapping(ApiPaths.ONLINE+"/{userId}")
     public ResponseEntity<OrganizationHierarchyLocationDTO> getUserLastLocation(@PathVariable Long userId) {
-        OrganizationHierarchyLocationDTO organizationHierarchyLocationDTO = OrganizationHierarchyLocationDTO
-                .fromDomain(inferenceService.getUserLastLocation(userId));
+        OrganizationHierarchyLocationDTO organizationHierarchyLocationDTO = inferenceService
+                .getUserLastLocation(userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(organizationHierarchyLocationDTO);
     }

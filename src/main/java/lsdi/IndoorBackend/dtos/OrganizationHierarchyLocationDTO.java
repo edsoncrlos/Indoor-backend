@@ -1,24 +1,11 @@
 package lsdi.IndoorBackend.dtos;
 
-import lsdi.IndoorBackend.domain.model.Organization;
+import java.time.Instant;
 
 public record OrganizationHierarchyLocationDTO(
         Long organizationId,
+        Instant timestamp,
         String organizationName,
         IndoorEnvironmentHierarchyLocationDTO environment
 ) {
-    public static OrganizationHierarchyLocationDTO fromDomain(Organization domain) {
-
-        IndoorEnvironmentHierarchyLocationDTO child =
-                domain.getIndoorEnvironments().stream()
-                        .findFirst()
-                        .map(IndoorEnvironmentHierarchyLocationDTO::fromDomain)
-                        .orElse(null);
-
-        return new OrganizationHierarchyLocationDTO(
-                domain.getId(),
-                domain.getName(),
-                child
-        );
-    }
 }
