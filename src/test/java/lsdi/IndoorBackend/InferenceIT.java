@@ -9,12 +9,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
 import static lsdi.IndoorBackend.common.InferenceConstants.indoorEnvironmentsDTO;
 import static lsdi.IndoorBackend.common.OrganizationConstants.ROOT_ORG;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 public class InferenceIT {
     @Autowired
     private TestRestTemplate restTemplate;
