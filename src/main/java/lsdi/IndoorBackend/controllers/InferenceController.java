@@ -21,7 +21,7 @@ public class InferenceController {
     }
 
     @PostMapping(ApiPaths.OFFLINE)
-    public ResponseEntity<String> addEnvironmentIndoorTrainingData(@RequestBody @Valid OrganizationDTO organizationDTO) {
+    public ResponseEntity<String> addEnvironmentIndoorTrainingData(@Valid @RequestBody OrganizationDTO organizationDTO) {
         inferenceService.saveOrganizationIndoorTraining(organizationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body("created");
     }
@@ -36,9 +36,9 @@ public class InferenceController {
     }
 
     @PostMapping(ApiPaths.ONLINE)
-    public void addIndoorInference(InferenceIndoorEnvironmentDTO inferenceDTO) {
+    public ResponseEntity<String> addIndoorInference(@Valid @RequestBody InferenceIndoorEnvironmentDTO inferenceDTO) {
         inferenceService.addInference(inferenceDTO);
-        ResponseEntity.status(HttpStatus.CREATED).body("created");
+        return ResponseEntity.status(HttpStatus.CREATED).body("created");
     }
 
     @GetMapping(ApiPaths.ONLINE+"/{userId}")

@@ -1,5 +1,6 @@
 package lsdi.IndoorBackend.dtos;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -8,24 +9,35 @@ import lsdi.IndoorBackend.entities.IndoorEnvironmentEntity;
 import java.util.List;
 
 public record IndoorEnvironmentDTO(
-        @Positive
+        @Positive(message = "The environment ID must be a positive number")
         Long id,
-        @NotBlank
+
+        @NotBlank(message = "The indoor environment name must not be blank")
         String name,
+
         List<IndoorEnvironmentDTO> childsIndoorEnvironments,
-        @NotNull
+
+        @NotNull(message = "At least one beacon signal statistic must be provided")
+        @Valid
         List<BeaconSignalStatisticsDTO> beaconsSignalStatistics
 ) {
+    public IndoorEnvironmentDTO
+     {
+        if (childsIndoorEnvironments == null) {
+            childsIndoorEnvironments = List.of();
+        }
+    }
+
     public IndoorEnvironmentDTO(
             String name,
             List<IndoorEnvironmentDTO> childsIndoorEnvironments,
             List<BeaconSignalStatisticsDTO> beaconSignalStatistics
     ) {
         this(
-            null,
-            name,
-            childsIndoorEnvironments,
-            beaconSignalStatistics
+                null,
+                name,
+                childsIndoorEnvironments,
+                beaconSignalStatistics
         );
     }
 

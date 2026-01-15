@@ -23,7 +23,7 @@ public class IndoorEnvironmentEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "jsonb", nullable = false)
     @ColumnTransformer(write = "?::jsonb")
     @Convert(converter = BeaconsSignalStatisticsJsonConverter.class)
     private List<BeaconSignalStatistics> beaconsSignalStatistics;

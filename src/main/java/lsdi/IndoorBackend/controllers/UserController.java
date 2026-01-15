@@ -1,5 +1,6 @@
 package lsdi.IndoorBackend.controllers;
 
+import jakarta.validation.Valid;
 import lsdi.IndoorBackend.common.ApiPaths;
 import lsdi.IndoorBackend.domain.model.User;
 import lsdi.IndoorBackend.dtos.UserDTO;
@@ -19,13 +20,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> addUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<Long> addUser(@Valid @RequestBody UserDTO userDTO) {
         User user = User.Mapper.fromDTO(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
     }
 
     @PutMapping
-    public ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> updateUser(@Valid @RequestBody UserDTO userDTO) {
         User user = User.Mapper.fromDTO(userDTO);
         userService.updateUser(user);
         return ResponseEntity.status(HttpStatus.OK).body("updated");

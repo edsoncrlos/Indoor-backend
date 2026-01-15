@@ -1,5 +1,6 @@
 package lsdi.IndoorBackend.controllers;
 
+import jakarta.validation.Valid;
 import lsdi.IndoorBackend.common.ApiPaths;
 import lsdi.IndoorBackend.dtos.CreateOrganizationDTO;
 import lsdi.IndoorBackend.services.OrganizationService;
@@ -21,7 +22,7 @@ public class OrganizationController {
     }
 
     @PostMapping(ApiPaths.ORGANIZATION)
-    public ResponseEntity<Long> addOrganization(@RequestBody CreateOrganizationDTO createOrganizationDto) {
+    public ResponseEntity<Long> addOrganization(@Valid @RequestBody CreateOrganizationDTO createOrganizationDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(organizationService.save(createOrganizationDto));
     }
 

@@ -78,15 +78,17 @@ public class InferenceService {
     }
 
     public void addInference(InferenceIndoorEnvironmentDTO inferenceIndoorEnvironmentDTO) {
-        UUID mobileIdentifier = UUID.fromString(inferenceIndoorEnvironmentDTO.mobileId());
+        UUID mobileId = inferenceIndoorEnvironmentDTO.mobileId();
+        Long environmentId = inferenceIndoorEnvironmentDTO.environmentId();
+
         UserEntity user = userRepository
-                .findByMobileIdentifier(mobileIdentifier)
+                .findByMobileIdentifier(mobileId)
                 .orElseThrow(() ->
                         new EntityNotFoundException("User not found")
                 );
 
         IndoorEnvironmentEntity environmentEntity = indoorEnvironmentRepository
-                .findById(inferenceIndoorEnvironmentDTO.environmentId())
+                .findById(environmentId)
                 .orElseThrow(() ->
                         new EntityNotFoundException("IndoorEnvironment not found")
                 );
@@ -101,10 +103,14 @@ public class InferenceService {
 
     @Transactional
     public Organization getUserLastLocation(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new EntityNotFoundException("User not found");
+        }
+
         UserIndoorEnvironmentEntity userIndoorEnvironment = userIndoorEnvironmentRepository
                 .findFirstByUser_IdOrderByCreatedAtDesc(userId)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("User not found")
+                        new EntityNotFoundException("User never send predict")
                 );
 
         return getOrganizationWithParentIndoorEnvironments(

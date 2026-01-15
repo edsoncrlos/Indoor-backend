@@ -3,6 +3,7 @@ package lsdi.IndoorBackend.services;
 import jakarta.persistence.EntityNotFoundException;
 import lsdi.IndoorBackend.domain.model.User;
 import lsdi.IndoorBackend.entities.UserEntity;
+import lsdi.IndoorBackend.exceptions.ResourceConflictException;
 import lsdi.IndoorBackend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,14 @@ public class UserService {
     }
 
     public Long save(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new ResourceConflictException("email already exists");
+        }
+
+        if (userRepository.existsByMobileIdentifier(user.getMobileIdentifier())) {
+            throw new ResourceConflictException("Mobile identifier already exists");
+        }
+
         UserEntity userEntity = new UserEntity(
                 user.getName(),
                 user.getEmail(),

@@ -1,16 +1,27 @@
 package lsdi.IndoorBackend.dtos;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lsdi.IndoorBackend.domain.model.BeaconSignalStatistics;
 
 public record BeaconSignalStatisticsDTO(
-        @NotBlank
+        @NotBlank(message = "The MAC address must not be blank")
         String mac,
-        float mean,
-        double std,
-        long timestampMean,
-        double variance,
-        float weight
+
+        @NotNull(message = "The mean value must be provided")
+        Float mean,
+
+        @NotNull(message = "The std must be provided")
+        Double std,
+
+        @NotNull(message = "The timestamp mean must be provided")
+        Long timestampMean,
+
+        @NotNull(message = "The variance must be provided")
+        Double variance,
+
+        @NotNull(message = "The weight must be provided")
+        Float weight
 ) {
     public static BeaconSignalStatisticsDTO fromDomain(BeaconSignalStatistics domain) {
         return new BeaconSignalStatisticsDTO(
