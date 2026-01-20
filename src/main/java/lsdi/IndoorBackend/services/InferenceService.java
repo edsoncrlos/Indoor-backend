@@ -17,6 +17,7 @@ import lsdi.IndoorBackend.repositories.IndoorEnvironmentRepository;
 import lsdi.IndoorBackend.repositories.OrganizationRepository;
 import lsdi.IndoorBackend.repositories.UserIndoorEnvironmentRepository;
 import lsdi.IndoorBackend.repositories.UserRepository;
+import lsdi.IndoorBackend.repositories.projections.IndoorEnvironmentProjection;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -109,56 +110,32 @@ public class InferenceService {
             throw new EntityNotFoundException("User not found");
         }
 
+        // get last predict
         UserIndoorEnvironmentEntity userIndoorEnvironment = userIndoorEnvironmentRepository
                 .findFirstByUser_IdOrderByCreatedAtDesc(userId)
                 .orElseThrow(() ->
                         new EntityNotFoundException("User never send predict")
                 );
 
-        Organization organization =  getOrganizationWithParentIndoorEnvironments(
-                userIndoorEnvironment.getIndoorEnvironment()
-        );
+        // get parents environments
+        Long indoorEnvironmentId = userIndoorEnvironment.getIndoorEnvironment().getId();
+        List<IndoorEnvironmentProjection> indoorEnvironmentsProjections = indoorEnvironmentRepository
+                .findParentsRecursive(indoorEnvironmentId);
+        IndoorEnvironment indoorEnvironment = IndoorEnvironment.Mapper.fromProjection(indoorEnvironmentsProjections, indoorEnvironmentId);
+
+        // get organization
+        OrganizationEntity organization = organizationRepository
+                .findByIndoorEnvironmentId(indoorEnvironment.getId())
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Organization not found")
+                );
 
         OrganizationHierarchyLocationDTO organizationHierarchyLocationDTO = new OrganizationHierarchyLocationDTO(
                 organization.getId(),
                 userIndoorEnvironment.getCreatedAt(),
                 organization.getName(),
-                IndoorEnvironmentHierarchyLocationDTO.fromDomain(organization.getIndoorEnvironments().get(0))
+                IndoorEnvironmentHierarchyLocationDTO.fromDomain(indoorEnvironment)
         );
         return organizationHierarchyLocationDTO;
-    }
-
-    @Transactional
-    private Organization getOrganizationWithParentIndoorEnvironments(IndoorEnvironmentEntity indoorEnvironmentEntity) {
-        Set<Long> visited = new HashSet<>();
-        IndoorEnvironmentEntity current = indoorEnvironmentEntity;
-
-        IndoorEnvironment childIndoorEnvironment = new IndoorEnvironment(
-            current.getId(),
-            current.getName()
-        );
-        IndoorEnvironment parentIndoorEnvironment;
-
-        while (current.getParent() != null) {
-            if (!visited.add(current.getId())) {
-                throw new IllegalStateException("Cycle detected in the hierarchy");
-            }
-            current = current.getParent();
-
-            parentIndoorEnvironment = new IndoorEnvironment(
-                    current.getId(),
-                    current.getName()
-            );
-
-            parentIndoorEnvironment.addChildIndoorEnvironment(childIndoorEnvironment);
-            childIndoorEnvironment = parentIndoorEnvironment;
-        }
-        OrganizationEntity organizationEntity = current.getOrganization();
-
-        return new Organization(
-                organizationEntity.getId(),
-                organizationEntity.getName(),
-                childIndoorEnvironment
-        );
     }
 }
